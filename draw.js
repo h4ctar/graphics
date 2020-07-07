@@ -91,7 +91,7 @@ export const line = (x1, y1, x2, y2, color) => {
     let y = y1;
 
     for (let i = 1; i <= step; i++) {
-        bufRgb[Math.round(y) * canvas.width + x] = value;
+        bufRgb[Math.round(y) * canvas.width + Math.round(x)] = value;
         x += dx;
         y += dy;
     }
