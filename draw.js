@@ -1,5 +1,6 @@
 /**
- * @typedef {{ red: number, green: number, blue: number }} Color
+ * @typedef { import("./math").Point2 } Point2
+ * @typedef { import("./color").Color } Color
  */
 
 /** @type HTMLCanvasElement */
@@ -49,13 +50,12 @@ export const blit = () => {
 };
 
 /**
- * @param {number} x
- * @param {number} y
+ * @param {Point2} p
  * @param {Color} color
  */
-export const pset = (x, y, color) => {
+export const pset = (p, color) => {
     const value = colorToValue(color);
-    bufRgb[y * canvas.width + x] = value;
+    bufRgb[Math.floor(p.y) * canvas.width + Math.floor(p.x)] = value;
 };
 
 /**
@@ -72,75 +72,67 @@ export const hline = (x1, x2, y, color) => {
 };
 
 /**
- * @param {number} x1
- * @param {number} y1
- * @param {number} x2
- * @param {number} y2
+ * @param {Point2} p1
+ * @param {Point2} p2
  * @param {Color} color
  */
-export const line = (x1, y1, x2, y2, color) => {
+export const line = (p1, p2, color) => {
     const value = colorToValue(color);
 
-    let dx = x2 - x1;
-    let dy = y2 - y1;
+    let dx = p2.x - p1.x;
+    let dy = p2.y - p1.y;
     const step = Math.max(Math.abs(dx), Math.abs(dy));
     dx /= step;
     dy /= step;
 
-    let x = x1;
-    let y = y1;
+    let x = p1.x;
+    let y = p1.y;
 
     for (let i = 1; i <= step; i++) {
-        bufRgb[Math.round(y) * canvas.width + Math.round(x)] = value;
+        bufRgb[Math.floor(y) * canvas.width + Math.floor(x)] = value;
         x += dx;
         y += dy;
     }
 };
 
 /**
- * @param {number} x1
- * @param {number} y1
- * @param {number} x2
- * @param {number} y2
- * @param {number} x3
- * @param {number} y3
+ * @param {Point2} p1
+ * @param {Point2} p2
+ * @param {Point2} p3
  * @param {Color} color
  */
-export const triangle = (x1, y1, x2, y2, x3, y3, color) => {
+export const triangle = (p1, p2, p3, color) => {
     // Order the points vertically
-    if (y1 > y3) {
-        [x1, x3] = [x3, x1];
-        [y1, y3] = [y3, y1];
+    if (p1.y > p3.y) {
+        [p1, p3] = [p3, p1];
     }
-    if (y1 > y2) {
-        [x1, x2] = [x2, x1];
-        [y1, y2] = [y2, y1];
+    if (p1.y > p2.y) {
+        [p1, p2] = [p2, p1];
     }
-    if (y2 > y3) {
-        [x2, x3] = [x3, x2];
-        [y2, y3] = [y3, y2];
+    if (p2.y > p3.y) {
+        [p2, p3] = [p3, p2];
     }
 
     // a is edge from 1 to 2
     // b is edge from 1 to 3
     // c is edge from 2 to 3
-    const da = (x2 - x1) / (y2 - y1);
-    const db = (x3 - x1) / (y3 - y1);
-    const dc = (x3 - x2) / (y3 - y2);
+    const da = (p2.x - p1.x) / (p2.y - p1.y);
+    const db = (p3.x - p1.x) / (p3.y - p1.y);
+    const dc = (p3.x - p2.x) / (p3.y - p2.y);
 
-    let xa = x1;
-    let xb = x1;
-    let xc = x2;
+    let xa = p1.x;
+    let xb = p1.x;
+    let xc = p2.x;
 
     // Scan from 1 to 2
-    for (let y = y1; y < y2; y++) {
+    for (let y = p1.y; y < p2.y; y++) {
         hline(xa, xb, y, color);
         xa += da;
         xb += db;
     }
 
     // Scan from 2 to 3
-    for (let y = y2; y <= y3; y++) {
+    for (let y = p2.y; y <= p3.y; y++) {
         hline(xb, xc, y, color);
         xb += db;
         xc += dc;

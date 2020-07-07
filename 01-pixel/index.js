@@ -1,14 +1,14 @@
 import { init, clear, blit, pset } from "../draw.js";
 import { black, randomColor } from "../color.js";
+import { randomPoint2 } from "../math.js";
 
 init();
 
 clear(black);
 
 setInterval(() => {
-    const x = Math.floor(Math.random() * 320);
-    const y = Math.floor(Math.random() * 200);
+    const p = randomPoint2();
     const color = randomColor();
-    pset(x, y, color);
+    pset(p, color);
     blit();
 }, 16);
