@@ -1,3 +1,4 @@
+// @ts-check
 /**
  * @typedef {{ x: number, y: number }} Point2
  * @typedef {{ x: number, y: number, z: number }} Point3

@@ -1,3 +1,4 @@
+// @ts-check
 /**
  * @typedef { import("./math").Point2 } Point2
  * @typedef { import("./color").Color } Color
@@ -23,6 +24,7 @@ let bufRgb;
  * @param {number} height
  */
 export const init = (width = 320, height = 200) => {
+    // @ts-ignore
     canvas = document.getElementById("canvas");
 
     canvas.width = width;
