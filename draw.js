@@ -18,16 +18,16 @@ let buf8;
 let bufRgb;
 
 /**
- * @param {number} width 
- * @param {number} height 
+ * @param {number} width
+ * @param {number} height
  */
 export const init = (width = 320, height = 200) => {
-    canvas = document.getElementById('canvas');
+    canvas = document.getElementById("canvas");
 
     canvas.width = width;
     canvas.height = height;
 
-    ctx = canvas.getContext('2d');
+    ctx = canvas.getContext("2d");
     imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     const buf = new ArrayBuffer(imageData.data.length);
@@ -49,8 +49,8 @@ export const blit = () => {
 };
 
 /**
- * @param {number} x 
- * @param {number} y 
+ * @param {number} x
+ * @param {number} y
  * @param {Color} color
  */
 export const pset = (x, y, color) => {
@@ -59,8 +59,8 @@ export const pset = (x, y, color) => {
 };
 
 /**
- * @param {number} x1 
- * @param {number} x2 
+ * @param {number} x1
+ * @param {number} x2
  * @param {number} y
  * @param {Color} color
  */
@@ -72,9 +72,9 @@ export const hline = (x1, x2, y, color) => {
 };
 
 /**
- * @param {number} x1 
+ * @param {number} x1
  * @param {number} y1
- * @param {number} x2 
+ * @param {number} x2
  * @param {number} y2
  * @param {Color} color
  */
@@ -84,23 +84,23 @@ export const line = (x1, y1, x2, y2, color) => {
     let dx = x2 - x1;
     let dy = y2 - y1;
     const step = Math.max(Math.abs(dx), Math.abs(dy));
-    dx = dx / step;
-    dy = dy / step;
+    dx /= step;
+    dy /= step;
 
     let x = x1;
     let y = y1;
 
     for (let i = 1; i <= step; i++) {
         bufRgb[Math.round(y) * canvas.width + x] = value;
-        x = x + dx;
-        y = y + dy;
+        x += dx;
+        y += dy;
     }
 };
 
 /**
- * @param {number} x1 
+ * @param {number} x1
  * @param {number} y1
- * @param {number} x2 
+ * @param {number} x2
  * @param {number} y2
  * @param {number} x3
  * @param {number} y3
@@ -151,6 +151,4 @@ export const triangle = (x1, y1, x2, y2, x3, y3, color) => {
  * @param {Color} color
  * @returns {number}
  */
-const colorToValue = (color) => {
-    return (255 << 24) | (color.blue << 16) | (color.green << 8) | color.red;
-};
+const colorToValue = (color) => (255 << 24) | (color.blue << 16) | (color.green << 8) | color.red;

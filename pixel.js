@@ -1,5 +1,5 @@
-import { init, clear, blit, pset, hline, line, triangle } from './draw.js';
-import { red, green, blue, black } from './color.js';
+import { init, clear, blit, pset, hline, line, triangle } from "./draw.js";
+import { red, green, blue, black } from "./color.js";
 
 init();
 
