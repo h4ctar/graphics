@@ -1,6 +1,9 @@
 # Graphics
 
-## How to run
+## Demo
+ * https://bensmith87.github.io/graphics
+
+## How to run locally
  1. Clone or download and unzip the repository
  2. Install the [Web Server for Chrome Extension](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
  3. Use the Web Server to serve the local copy of the repo
