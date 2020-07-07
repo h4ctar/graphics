@@ -68,7 +68,7 @@ export const pset = (p, color) => {
  */
 export const hline = (x1, x2, y, color) => {
     const value = colorToValue(color);
-    const start = y * canvas.width + Math.min(x1, x2);
+    const start = Math.floor(y) * canvas.width + Math.min(x1, x2);
     const end = start + Math.abs(x1 - x2);
     bufRgb.fill(value, start, end);
 };
