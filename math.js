@@ -10,6 +10,18 @@ export const randomPoint2 = () => ({
 });
 
 /**
+ * Subtract one point from another.
+ * @param {Point3} a 
+ * @param {Point3} b
+ */
+export const sub = (a, b) => ({
+    x: a.x - b.x,
+    y: a.y - b.y,
+    z: a.z - b.z,
+});
+
+/**
+ * Determine if three points are clockwise.
  * @param {Point2} a 
  * @param {Point2} b 
  * @param {Point2} c 
@@ -23,6 +35,7 @@ export const clockwise = (a, b, c) => {
 };
 
 /**
+ * Rotate a point.
  * @param {Point3} p
  * @param {number} phi 
  * @param {number} theta 
@@ -34,6 +47,7 @@ export const rotate = (p, phi, theta) => ({
 });
 
 /**
+ * Project a 3d point into a 2d point.
  * @param {Point3} p 
  * @param {number} xCenter 
  * @param {number} yCenter 
@@ -43,3 +57,40 @@ export const project = (p, xCenter = 160, yCenter = 100, zCenter = 256) => ({
     x: 256 * p.x / (p.z + zCenter) + xCenter,
     y: 256 * p.y / (p.z + zCenter) + yCenter,
 });
+
+/**
+ * Calculate the dot product.
+ * @param {Point3} a 
+ * @param {Point3} b 
+ */
+export const dot = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z;
+
+/**
+ * Calculate the cross product.
+ * @param {Point3} a 
+ * @param {Point3} b
+ */
+export const cross = (a, b) => ({
+    x: a.y * b.z - a.z * b.y,
+    y: a.z * b.x - a.x * b.z,
+    z: a.x * b.y - a.y * b.x,
+});
+
+/**
+ * Calculate the length of a vertex.
+ * @param {Point3} p 
+ */
+export const length = (p) => Math.sqrt(p.x * p.x + p.y * p.y + p.z * p.z);
+
+/**
+ * Normalize a vertex.
+ * @param {Point3} p 
+ */
+export const normalize = (p) => {
+    const l = length(p);
+    return {
+        x: p.x / l,
+        y: p.y / l,
+        z: p.z / l,
+    };
+};

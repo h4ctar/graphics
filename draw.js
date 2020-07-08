@@ -39,7 +39,7 @@ export const init = (width = 320, height = 200) => {
     buf8 = new Uint8ClampedArray(buf);
     bufRgb = new Uint32Array(buf);
 
-    gradient();
+    gradient({ red: 255, green: 128, blue: 50 });
 };
 
 /**

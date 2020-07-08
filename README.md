@@ -14,4 +14,5 @@
  * http://www.qbasicnews.com/tutorials.php
  * http://www.petesqbsite.com/sections/tutorials/graphics.shtml
  * https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
+ * https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/diffuse-lambertian-shading
  

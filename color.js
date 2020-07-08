@@ -17,15 +17,26 @@ export const cyan = { red: 0, green: 255, blue: 255 };
 /** @type number[] */
 export const palette = Array(256);
 
+/**
+ * Generate a random color.
+ */
 export const randomColor = () => ({
     red: Math.floor(Math.random() * 256),
     green: Math.floor(Math.random() * 256),
     blue: Math.floor(Math.random() * 256),
 });
 
-export const gradient = () => {
+/**
+ * Generate a gradient palette from black to the parsed color.
+ * @param {Rgb} color 
+ */
+export const gradient = (color) => {
     for (let i = 0; i < 256; i++) {
-        palette[i] = colorToValue({ red: i, green: i, blue: i });
+        palette[i] = colorToValue({
+            red: color.red * i / 256,
+            green: color.green * i / 256,
+            blue: color.blue * i / 256
+        });
     }
 };
 
