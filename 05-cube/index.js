@@ -15,6 +15,13 @@ const poisitions = [
     { x: 50, y: -50, z: 50 },
 ];
 
+const lines = [
+    { a: 0, b: 2 }, { a: 0, b: 3 }, { a: 0, b: 4 },
+    { a: 1, b: 2 }, { a: 1, b: 3 }, { a: 1, b: 5 },
+    { a: 6, b: 5 }, { a: 6, b: 2 }, { a: 6, b: 4 },
+    { a: 7, b: 4 }, { a: 7, b: 3 }, { a: 7, b: 5 },
+];
+
 let phi = 0;
 let theta = 0;
 
@@ -34,21 +41,7 @@ setInterval(() => {
         y: 256 * r.y / (r.z + 256) + 100,
     }));
 
-    line(screen[0], screen[2], white);
-    line(screen[0], screen[3], white);
-    line(screen[0], screen[4], white);
-
-    line(screen[1], screen[2], white);
-    line(screen[1], screen[3], white);
-    line(screen[1], screen[5], white);
-
-    line(screen[6], screen[5], white);
-    line(screen[6], screen[2], white);
-    line(screen[6], screen[4], white);
-
-    line(screen[7], screen[4], white);
-    line(screen[7], screen[3], white);
-    line(screen[7], screen[5], white);
+    lines.forEach((l) => line(screen[l.a], screen[l.b], white));
 
     phi += 0.01;
     theta += 0.01;
