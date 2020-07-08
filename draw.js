@@ -4,6 +4,8 @@
  * @typedef { import("./color").Color } Color
  */
 
+import { colorToValue, gradient } from "./color.js";
+
 /** @type HTMLCanvasElement */
 let canvas;
 
@@ -36,6 +38,8 @@ export const init = (width = 320, height = 200) => {
     const buf = new ArrayBuffer(imageData.data.length);
     buf8 = new Uint8ClampedArray(buf);
     bufRgb = new Uint32Array(buf);
+
+    gradient();
 };
 
 /**
@@ -141,9 +145,3 @@ export const triangle = (p1, p2, p3, color) => {
         xc += dc;
     }
 };
-
-/**
- * @param {Color} color
- * @returns {number}
- */
-const colorToValue = (color) => (255 << 24) | (color.blue << 16) | (color.green << 8) | color.red;
