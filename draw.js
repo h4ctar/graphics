@@ -90,7 +90,7 @@ export const line = (p1, p2, color) => {
     let x = p1.x;
     let y = p1.y;
 
-    for (let i = 1; i <= step; i++) {
+    for (let i = 0; i <= step; i++) {
         bufRgb[Math.floor(y) * canvas.width + Math.floor(x)] = value;
         x += dx;
         y += dy;
