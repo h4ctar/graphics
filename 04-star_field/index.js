@@ -2,6 +2,7 @@
 
 import { init, clear, blit, pset } from "../draw.js";
 import { black, white } from "../color.js";
+import { project } from "../math.js";
 
 // http://freespace.virgin.net/hugo.elias/graphics/x_stars.htm
 const poisitions = Array.from({ length: 64 }, () => ({
@@ -18,10 +19,7 @@ setInterval(() => {
     poisitions.forEach((p) => {
         p.z -= 5;
 
-        const screen = {
-            x: p.x / p.z * 100 + 160,
-            y: p.y / p.z * 100 + 100,
-        };
+        const screen = project(p);
 
         if (screen.x < 0 || screen.x >= 320 || screen.y < 0 || screen.y >= 200) {
             p.x = Math.random() * 1000 - 500;

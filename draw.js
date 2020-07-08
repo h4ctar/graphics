@@ -125,16 +125,17 @@ export const triangle = (p1, p2, p3, color) => {
     let xa = p1.x;
     let xb = p1.x;
     let xc = p2.x;
+    let y = p1.y;
 
     // Scan from 1 to 2
-    for (let y = p1.y; y < p2.y; y++) {
+    for (y; y < p2.y; y++) {
         hline(xa, xb, y, color);
         xa += da;
         xb += db;
     }
 
     // Scan from 2 to 3
-    for (let y = p2.y; y <= p3.y; y++) {
+    for (y; y <= p3.y; y++) {
         hline(xb, xc, y, color);
         xb += db;
         xc += dc;

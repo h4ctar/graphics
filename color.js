@@ -8,6 +8,9 @@ export const white = { red: 255, green: 255, blue: 255 };
 export const red = { red: 255, green: 0, blue: 0 };
 export const green = { red: 0, green: 255, blue: 0 };
 export const blue = { red: 0, green: 0, blue: 255 };
+export const yellow = { red: 255, green: 255, blue: 0 };
+export const magenta = { red: 255, green: 0, blue: 255 };
+export const cyan = { red: 0, green: 255, blue: 255 };
 
 export const randomColor = () => ({
     red: Math.floor(Math.random() * 256),

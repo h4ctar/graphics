@@ -2,6 +2,7 @@
 
 import { init, clear, blit, line } from "../draw.js";
 import { black, white } from "../color.js";
+import { rotate, project } from "../math.js";
 
 // http://www.qbasicnews.com/tutorials.php?action=view&id=9
 const poisitions = [
@@ -30,16 +31,8 @@ init();
 setInterval(() => {
     clear(black);
 
-    const rotated = poisitions.map((p) => ({
-        x: -p.x * Math.sin(theta) + p.y * Math.cos(theta),
-        y: -p.x * Math.cos(theta) * Math.sin(phi) - p.y * Math.sin(theta) * Math.sin(phi) - p.z * Math.cos(phi),
-        z: -p.x * Math.cos(theta) * Math.cos(phi) - p.y * Math.sin(theta) * Math.cos(phi) + p.z * Math.sin(phi),
-    }));
-
-    const screen = rotated.map((r) => ({
-        x: 256 * r.x / (r.z + 256) + 160,
-        y: 256 * r.y / (r.z + 256) + 100,
-    }));
+    const rotated = poisitions.map((p) => rotate(p, phi, theta));
+    const screen = rotated.map((r) => project(r));
 
     lines.forEach((l) => line(screen[l.a], screen[l.b], white));
 
