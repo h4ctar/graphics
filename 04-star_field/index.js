@@ -13,7 +13,7 @@ const poisitions = Array.from({ length: 64 }, () => ({
 
 init();
 
-setInterval(() => {
+const loop = () => {
     clear(black);
 
     poisitions.forEach((p) => {
@@ -31,4 +31,8 @@ setInterval(() => {
     });
 
     blit();
-}, 16);
+
+    window.requestAnimationFrame(loop);
+};
+
+window.requestAnimationFrame(loop);

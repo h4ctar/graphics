@@ -8,11 +8,15 @@ init();
 
 clear(black);
 
-setInterval(() => {
+const loop = () => {
     const p1 = randomPoint2();
     const p2 = randomPoint2();
     const p3 = randomPoint2();
     const color = randomColor();
     triangle(p1, p2, p3, color);
     blit();
-}, 16);
+
+    window.requestAnimationFrame(loop);
+};
+
+window.requestAnimationFrame(loop);

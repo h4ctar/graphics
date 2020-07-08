@@ -36,7 +36,7 @@ let theta = 0;
 
 init();
 
-setInterval(() => {
+const loop = () => {
     clear(black);
 
     const rotated = poisitions.map((p) => rotate(p, phi, theta));
@@ -50,5 +50,9 @@ setInterval(() => {
     theta += 0.01;
 
     blit();
-}, 16);
+
+    window.requestAnimationFrame(loop);
+};
+
+window.requestAnimationFrame(loop);
 

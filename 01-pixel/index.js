@@ -8,9 +8,13 @@ init();
 
 clear(black);
 
-setInterval(() => {
+const loop = () => {
     const p = randomPoint2();
     const color = randomColor();
     pset(p, color);
     blit();
-}, 16);
+
+    window.requestAnimationFrame(loop);
+};
+
+window.requestAnimationFrame(loop);
