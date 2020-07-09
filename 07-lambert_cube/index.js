@@ -1,8 +1,8 @@
 // @ts-check
 
-import { init, clear, blit, triangle } from "../draw.js";
-import { black } from "../color.js";
-import { clockwise, project, rotate, dot, sub, cross, normalize } from "../math.js";
+import { init, clear, blit, triangle } from "../lib/draw.js";
+import { black } from "../lib/color.js";
+import { clockwise, project, rotate, dot, sub, cross, normalize } from "../lib/math.js";
 
 // http://www.qbasicnews.com/tutorials.php?action=view&id=9
 // https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/diffuse-lambertian-shading

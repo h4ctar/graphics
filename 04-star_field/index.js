@@ -1,8 +1,8 @@
 // @ts-check
 
-import { init, clear, blit, pset } from "../draw.js";
-import { black, white } from "../color.js";
-import { project } from "../math.js";
+import { init, clear, blit, pset } from "../lib/draw.js";
+import { black, white } from "../lib/color.js";
+import { project } from "../lib/math.js";
 
 // http://freespace.virgin.net/hugo.elias/graphics/x_stars.htm
 const poisitions = Array.from({ length: 64 }, () => ({

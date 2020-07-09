@@ -1,8 +1,8 @@
 // @ts-check
 
-import { init, clear, blit, triangle } from "../draw.js";
-import { black, blue, green, red, yellow, magenta, cyan } from "../color.js";
-import { clockwise, project, rotate } from "../math.js";
+import { init, clear, blit, triangle } from "../lib/draw.js";
+import { black, blue, green, red, yellow, magenta, cyan } from "../lib/color.js";
+import { clockwise, project, rotate } from "../lib/math.js";
 
 // http://www.qbasicnews.com/tutorials.php?action=view&id=9
 const poisitions = [

@@ -1,8 +1,8 @@
 // @ts-check
 
-import { init, clear, blit, pset } from "../draw.js";
-import { black, randomColor } from "../color.js";
-import { randomPoint2 } from "../math.js";
+import { init, clear, blit, pset } from "../lib/draw.js";
+import { black, randomColor } from "../lib/color.js";
+import { randomPoint2 } from "../lib/math.js";
 
 init();
 
