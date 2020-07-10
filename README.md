@@ -9,15 +9,16 @@ But everyone has a browser, and JavaScript is alright.
 So I've created a library of functions that allow us to setup a 320x200 canvas with 256 color palette and create all the classic effects.
 
 The code is ES6 that runs directly in the browser so no complicated compiling or transpiling required.
-The code is pretty basic, no classes or "OOP", just data and procedures.
-I've added JSDoc to make things a bit nicer if you use a modern text editor (may I suggest [Visual Studio Code](https://code.visualstudio.com/)).
+I've tried to keep the code simple, just data and procedures.
+There are JSDoc comments to give you and your text editor hints (may I suggest [Visual Studio Code](https://code.visualstudio.com/)).
 
-Anyway, I'm having a lot of fun recreating these demos and rereading all the tutors.
+Anyway, I'm having a lot of fun rereading all the tutors and recreating these effects.
 
-![Lambert Cube](lambert.png)
-![Fire](fire.png)
-![Conway's Game of Life](conway.png)
-![Mandelbrot Set](mandelbrot.png)
+![Star Field](04-star_field/screenshot.png)
+![Lambert Cube](07-lambert_cube/screenshot.png)
+![Fire](08-fire/screenshot.png)
+![Conway's Game of Life](09-conway/screenshot.png)
+![Mandelbrot Set](10-mandelbrot/screenshot.png)
 
 ## Run Online
  * https://bensmith87.github.io/graphics
