@@ -4,10 +4,10 @@
  */
 
 import { init, blit, pset } from "../lib/draw.js";
-import { palette, gradient } from "../lib/color.js";
+import { palette, gradient, white } from "../lib/color.js";
 
 init();
-gradient({ red: 255, green: 255, blue: 255 });
+gradient(white);
 
 for (let Py = 0; Py < 200; Py++) {
     for (let Px = 0; Px < 320; Px++) {

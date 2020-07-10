@@ -49,7 +49,7 @@ const loop = () => {
     }
 
     for (let i = 0; i < 320 * 200; i++) {
-        const rgb = colorToRgb({ index: Math.floor(fire[i]) });
+        const rgb = colorToRgb({ index: fire[i] });
         if (rgb) spliceRgb(i, rgb);
     }
 

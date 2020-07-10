@@ -59,7 +59,7 @@ const loop = () => {
             const normal = normalize(cross(ab, cb));
             const diffuse = Math.max(incident * dot(normal, light), 0);
             const brightness = diffuse + ambient;
-            triangle(screen[t.a], screen[t.b], screen[t.c], { index: Math.floor(brightness) });
+            triangle(screen[t.a], screen[t.b], screen[t.c], { index: brightness });
         });
 
     phi += 0.01;
