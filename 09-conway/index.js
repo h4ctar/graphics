@@ -1,7 +1,6 @@
 // @ts-check
 /**
- * http://www.petesqbsite.com/sections/tutorials/tutorials/fire.txt
- * https://www.ssaurel.com/fireeffect/fireeffect.htm
+ * https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
  */
 
 import { init, blit, spliceRgb } from "../lib/draw.js";
