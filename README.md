@@ -14,7 +14,10 @@ I've added JSDoc to make things a bit nicer if you use a modern text editor (may
 
 Anyway, I'm having a lot of fun recreating these demos and rereading all the tutors.
 
-![Lambert Cube](screenshot.png)
+![Lambert Cube](lambert.png)
+![Fire](fire.png)
+![Conway's Game of Life](conway.png)
+![Mandelbrot Set](mandelbrot.png)
 
 ## Run Online
  * https://bensmith87.github.io/graphics
