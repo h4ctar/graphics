@@ -6,13 +6,14 @@
 
 import { init, blit, pset } from "../lib/draw.js";
 import { gradient, white } from "../lib/color.js";
+import { loop } from "../lib/loop.js";
 
 init();
 gradient(white);
 
 let phi = 0;
 
-const loop = () => {
+loop(() => {
     for (let Py = 0; Py < 200; Py++) {
         for (let Px = 0; Px < 320; Px++) {
             const cReal = Px / 320 * 3 - 2;
@@ -44,8 +45,4 @@ const loop = () => {
     blit();
 
     phi += 0.01;
-
-    window.requestAnimationFrame(loop);
-};
-
-window.requestAnimationFrame(loop);
+});

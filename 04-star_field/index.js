@@ -6,6 +6,7 @@
 import { init, blit, clear, wu } from "../lib/draw.js";
 import { white, gradient, black } from "../lib/color.js";
 import { project } from "../lib/math.js";
+import { loop } from "../lib/loop.js";
 
 const stars = Array.from({ length: 128 }, () => ({
     x: Math.random() * 1000 - 500,
@@ -18,7 +19,7 @@ const { buf8 } = init();
 gradient(white);
 clear(black);
 
-const loop = () => {
+loop(() => {
     // dim the old pixels to give motion blur effect
     for (let i = 0; i < 320 * 200 * 4; i += 4) {
         buf8[i] = Math.floor(buf8[i] * 0.8);
@@ -49,8 +50,4 @@ const loop = () => {
     });
 
     blit();
-
-    window.requestAnimationFrame(loop);
-};
-
-window.requestAnimationFrame(loop);
+});

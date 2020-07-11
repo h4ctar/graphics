@@ -3,6 +3,7 @@
 import { init, clear, blit, triangle } from "../lib/draw.js";
 import { black, blue, green, red, yellow, magenta, cyan } from "../lib/color.js";
 import { clockwise, project, rotate } from "../lib/math.js";
+import { loop } from "../lib/loop.js";
 
 // http://www.qbasicnews.com/tutorials.php?action=view&id=9
 const poisitions = [
@@ -36,7 +37,7 @@ let theta = 0;
 
 init();
 
-const loop = () => {
+loop(() => {
     clear(black);
 
     const rotated = poisitions.map((p) => rotate(p, phi, theta));
@@ -50,9 +51,5 @@ const loop = () => {
     theta += 0.01;
 
     blit();
-
-    window.requestAnimationFrame(loop);
-};
-
-window.requestAnimationFrame(loop);
+});
 

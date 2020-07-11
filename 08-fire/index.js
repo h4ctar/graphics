@@ -6,6 +6,7 @@
 
 import { init, blit, spliceRgb } from "../lib/draw.js";
 import { colorToRgb, flame } from "../lib/color.js";
+import { loop } from "../lib/loop.js";
 
 init();
 flame();
@@ -15,7 +16,7 @@ fire.fill(0);
 
 let wind = 0.5;
 
-const loop = () => {
+loop(() => {
     // embers
     for (let x = 1; x < 319; x++) {
         const index = x + 199 * 320;
@@ -54,8 +55,4 @@ const loop = () => {
     }
 
     blit();
-
-    window.requestAnimationFrame(loop);
-};
-
-window.requestAnimationFrame(loop);
+});

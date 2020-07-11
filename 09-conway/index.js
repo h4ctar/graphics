@@ -5,6 +5,7 @@
 
 import { init, blit, spliceRgb } from "../lib/draw.js";
 import { black, white } from "../lib/color.js";
+import { loop } from "../lib/loop.js";
 
 init();
 
@@ -18,7 +19,7 @@ for (let i = 0; i < 20000; i++) {
     cells[x + y * 320] = true;
 }
 
-const loop = () => {
+loop(() => {
     // draw the cells
     for (let i = 0; i < 320 * 200; i++) {
         const rgb = cells[i] ? white : black;
@@ -74,8 +75,4 @@ const loop = () => {
 
     // swap
     [cells, cellsNext] = [cellsNext, cells];
-
-    window.requestAnimationFrame(loop);
-};
-
-window.requestAnimationFrame(loop);
+});

@@ -3,6 +3,7 @@
 import { init, clear, blit, triangle } from "../lib/draw.js";
 import { black } from "../lib/color.js";
 import { clockwise, project, rotate, dot, sub, cross, normalize } from "../lib/math.js";
+import { loop } from "../lib/loop.js";
 
 // http://www.qbasicnews.com/tutorials.php?action=view&id=9
 // https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/diffuse-lambertian-shading
@@ -45,7 +46,7 @@ const light = normalize({
 
 init();
 
-const loop = () => {
+loop(() => {
     clear(black);
 
     const rotated = poisitions.map((p) => rotate(p, phi, theta));
@@ -66,9 +67,4 @@ const loop = () => {
     theta += 0.01;
 
     blit();
-
-    window.requestAnimationFrame(loop);
-};
-
-window.requestAnimationFrame(loop);
-
+});
