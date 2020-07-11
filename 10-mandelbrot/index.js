@@ -14,6 +14,10 @@ gradient(white);
 let phi = 0;
 
 loop(() => {
+    // precompute sin and cos, this makes a huge difference
+    const sinPhi = Math.sin(phi);
+    const cosPhi = Math.cos(phi);
+
     for (let Py = 0; Py < 200; Py++) {
         for (let Px = 0; Px < 320; Px++) {
             const cReal = Px / 320 * 3 - 2;
@@ -32,9 +36,9 @@ loop(() => {
                 // https://www.youtube.com/watch?v=2fdvHFrPoak
                 [zReal, zImaginary] = [
                     zReal * zReal - zImaginary * zImaginary + cReal,
-                    Math.sin(phi) * 2 * zReal * zImaginary + Math.cos(phi) * Math.abs(zReal) * zImaginary + cImaginary
+                    sinPhi * 2 * zReal * zImaginary + cosPhi * Math.abs(zReal) * zImaginary + cImaginary
                 ];
-                iteration = iteration + 1;
+                iteration++;
             }
 
             const brightness = iteration / maxIteration * 255;
