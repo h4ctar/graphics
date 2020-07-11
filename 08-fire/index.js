@@ -38,6 +38,7 @@ loop(() => {
         const indexRowBelow = (y + 1) * 320;
         for (let x = 1; x < 319; x++) {
 
+            // average the three pixels below this one
             let sum = 0;
             sum += fire[indexRowBelow + x - 1] * (0.5 + wind);
             sum += fire[indexRowBelow + x];
@@ -51,7 +52,7 @@ loop(() => {
 
     for (let i = 0; i < 320 * 200; i++) {
         const rgb = colorToRgb({ index: fire[i] });
-        if (rgb) spliceRgb(i, rgb);
+        spliceRgb(i, rgb);
     }
 
     blit();

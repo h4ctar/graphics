@@ -19,6 +19,7 @@ Anyway, I'm having a lot of fun rereading all the tutors and recreating these ef
 ![Fire](08-fire/screenshot.png)
 ![Conway's Game of Life](09-conway/screenshot.png)
 ![Mandelbrot Set](10-mandelbrot/screenshot.png)
+![Ray Casting](11-ray_cast/screenshot.png)
 
 ## Run Online
  * https://bensmith87.github.io/graphics
