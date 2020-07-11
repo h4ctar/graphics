@@ -59,8 +59,8 @@ loop(() => {
     for (let x = 0; x < 320; x++) {
         const theta = (x / 320 - 0.5) * Math.PI / 3;
         const { t, color } = castRay(player.theta + theta);
-        const height = Math.min(1000 / (t * Math.cos(theta)), 100);
-        line({ x, y: 100 - height }, { x, y: 99 + height }, color);
+        const height = Math.min(cellSize * 200 / (t * Math.cos(theta)), 200);
+        line({ x, y: 100 - height / 2 }, { x, y: 99 + height / 2 }, color);
     }
 
     blit();
