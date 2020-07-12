@@ -1,12 +1,13 @@
 // @ts-check
+/**
+ * https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/diffuse-lambertian-shading
+ */
 
 import { init, clear, blit, triangle } from "../lib/draw.js";
 import { black } from "../lib/color.js";
 import { clockwise, project, rotate, dot, sub, cross, normalize } from "../lib/math.js";
 import { loop } from "../lib/loop.js";
 
-// http://www.qbasicnews.com/tutorials.php?action=view&id=9
-// https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/diffuse-lambertian-shading
 const poisitions = [
     { x: 50, y: 50, z: -50 },
     { x: -50, y: -50, z: -50 },

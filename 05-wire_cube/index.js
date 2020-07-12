@@ -1,11 +1,13 @@
 // @ts-check
+/**
+ * http://www.qbasicnews.com/tutorials.php?action=view&id=9
+ */
 
 import { init, clear, blit, line } from "../lib/draw.js";
 import { black, white } from "../lib/color.js";
 import { rotate, project } from "../lib/math.js";
 import { loop } from "../lib/loop.js";
 
-// http://www.qbasicnews.com/tutorials.php?action=view&id=9
 const poisitions = [
     { x: 50, y: 50, z: -50 },
     { x: -50, y: -50, z: -50 },
