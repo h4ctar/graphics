@@ -21,6 +21,7 @@ Anyway, I'm having a lot of fun rereading all the tutors and recreating these ef
 ![Mandelbrot Set](10-mandelbrot/screenshot.png)
 ![Ray Casting](11-ray_cast/screenshot.png)
 ![Fibonacci Sphere](12-fibonacci_sphere/screenshot.png)
+![Texture Cube](13-texture_cube/screenshot.png)
 
 ## Run Online
  * https://bensmith87.github.io/graphics
