@@ -1,9 +1,10 @@
 // @ts-check
 
-import { init, clear, blit, correctTriangle, affineTriangle } from "../lib/draw.js";
+import { init, clear, blit, correctTriangle } from "../lib/draw.js";
 import { black } from "../lib/color.js";
 import { clockwise, project, rotate } from "../lib/math.js";
 import { loop } from "../lib/loop.js";
+import { loadTexture } from "../lib/texture.js";
 
 const poisitions = [
     { x: 50, y: 50, z: -50 },
@@ -34,16 +35,7 @@ const triangles = [
 let phi = 0;
 let theta = 0;
 
-const texture = new ImageData(64, 64);
-const textureImage = new Image();
-textureImage.src = "../texture/crate.png";
-textureImage.onload = () => {
-    const offscreenCanvas = new OffscreenCanvas(64, 64);
-    const offscreenContext = offscreenCanvas.getContext("2d");
-    offscreenContext.drawImage(textureImage, 0, 0);
-    const imageData = offscreenContext.getImageData(0, 0, offscreenCanvas.width, offscreenCanvas.height);
-    texture.data.set(imageData.data);
-};
+const texture = loadTexture("../texture/crate.png");
 
 init();
 
