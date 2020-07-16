@@ -9,11 +9,19 @@
 import { init, clear, blit, line, pset } from "../lib/draw.js";
 import { black, white } from "../lib/color.js";
 import { loop } from "../lib/loop.js";
-import { add, rotate, project, sub } from "../lib/math.js";
+import { add, rotate, project, yRotationMatrix, multiplyMatrix, identityMatrix, translationMatrix, xRotationMatrix, transformVertex } from "../lib/math.js";
 
 const patchSize = 20;
 
-/** @type { { pos: Point3, phi: number, theta: number, width: number, height: number, corners: Point3[], patches: { pos: Point3, texel: Texel }[] }[] } */
+/** @type {{
+ *   pos: Point3,
+ *   phi: number,
+ *   theta: number,
+ *   width: number,
+ *   height: number,
+ *   corners: Point3[],
+ *   patches: { pos: Point3, texel: Texel }[]
+ * }[]} */
 const quads = [{
     pos: { x: -500, y: -50, z: -500 },
     phi: 0,
@@ -60,38 +68,52 @@ quads.forEach((quad) => {
     }
 });
 
+const updateCameraMatrix = () => {
+    camera.matrix = xRotationMatrix(-camera.theta);
+    camera.matrix = multiplyMatrix(camera.matrix, yRotationMatrix(-camera.phi));
+    camera.matrix = multiplyMatrix(camera.matrix, translationMatrix({ x: -camera.pos.x, y: -camera.pos.y, z: -camera.pos.z }));
+};
+
 const camera = {
     pos: { x: 0, y: 0, z: -256 },
     phi: 0, // rotation around y axis
     theta: 0, // rotation around z axis
+    matrix: identityMatrix(),
 };
+updateCameraMatrix();
 
 window.addEventListener("keypress", (event) => {
     switch (event.key) {
         case "w": {
             camera.pos.x += 10 * Math.sin(camera.phi);
             camera.pos.z += 10 * Math.cos(camera.phi);
+            updateCameraMatrix();
             break;
         }
         case "s": {
             camera.pos.x -= 10 * Math.sin(camera.phi);
             camera.pos.z -= 10 * Math.cos(camera.phi);
+            updateCameraMatrix();
             break;
         }
         case "a": {
             camera.phi -= 0.1;
+            updateCameraMatrix();
             break;
         }
         case "d": {
             camera.phi += 0.1;
+            updateCameraMatrix();
             break;
         }
         case "q": {
             camera.theta -= 0.1;
+            updateCameraMatrix();
             break;
         }
         case "e": {
             camera.theta += 0.1;
+            updateCameraMatrix();
             break;
         }
     }
@@ -104,32 +126,28 @@ loop(() => {
 
     quads.forEach((quad) => {
         for (const patch of quad.patches) {
-            const w = rotate(sub(patch.pos, camera.pos), camera.phi, camera.theta);
+            const view = transformVertex(patch.pos, camera.matrix);
+
             // place camera at patch
             // draw scene
             // calculate brightness
             // write it to the texture
-            if (w.z > 0) {
-                const s = project(w, 160, 100, 0);
-                pset(s, white);
+            if (view.z > 0) {
+                const screen = project(view, 160, 100, 0);
+                pset(screen, white);
             }
         }
     });
 
-    // drawScene();
+    drawScene();
 
     blit();
 });
 
 const drawScene = () => {
     quads.forEach((quad) => {
-        const rotated = quad.corners.map((point) => rotate(sub(point, camera.pos), camera.phi, camera.theta));
-        const screen = rotated.map((r) => project(r, 160, 100, 0));
-
-        // pset(screen[0], white);
-        // pset(screen[1], white);
-        // pset(screen[2], white);
-        // pset(screen[3], white);
+        const view = quad.corners.map((pos) => transformVertex(pos, camera.matrix));
+        const screen = view.map((r) => project(r, 160, 100, 0));
 
         line(screen[0], screen[1], white);
         line(screen[1], screen[2], white);
