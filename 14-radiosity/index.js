@@ -6,10 +6,10 @@
  * @typedef { import("../lib/color").Color } Color
  */
 
-import { init, clear, blit, pset, triangle } from "../lib/draw.js";
-import { black, white, red } from "../lib/color.js";
+import { init, clear, blit, pset, correctTriangle, clipPolygon } from "../lib/draw.js";
+import { black, white } from "../lib/color.js";
 import { loop } from "../lib/loop.js";
-import { add, project, clipPolygon } from "../lib/math.js";
+import { add, project } from "../lib/math.js";
 import { yRotationMatrix, transformVertex, xRotationMatrix, multiplyMatrix, translationMatrix, identityMatrix } from "../lib/matrix.js";
 
 const patchSize = 20;
@@ -20,37 +20,40 @@ const patchSize = 20;
  *   theta: number,
  *   width: number,
  *   height: number,
- *   points: Point3[],
+ *   polygon: { point: Point3, texel: Texel }[],
  *   patches: { pos: Point3, texel: Texel }[]
+ *   texture: ImageData
  * }[]} */
 const quads = [{
-    pos: { x: -500, y: -50, z: -500 },
+    pos: { x: -50, y: -50, z: -50 },
     phi: 0,
     theta: 0,
-    width: 1000,
-    height: 200,
-    points: [],
+    width: 100,
+    height: 100,
+    polygon: [],
     patches: [],
+    texture: new ImageData(100 / patchSize, 100 / patchSize),
 },
 {
-    pos: { x: 500, y: -50, z: 500 },
+    pos: { x: 50, y: -50, z: 50 },
     phi: Math.PI,
     theta: 0,
-    width: 1000,
-    height: 200,
-    points: [],
+    width: 100,
+    height: 100,
+    polygon: [],
     patches: [],
+    texture: new ImageData(100 / patchSize, 100 / patchSize),
 }];
 
 quads.forEach((quad) => {
     const matrix = yRotationMatrix(quad.phi);
 
     // precompute the corners of the quad
-    quad.points = [
-        quad.pos,
-        add(quad.pos, transformVertex({ x: quad.width, y: 0, z: 0 }, matrix)),
-        add(quad.pos, transformVertex({ x: quad.width, y: quad.height, z: 0 }, matrix)),
-        add(quad.pos, transformVertex({ x: 0, y: quad.height, z: 0 }, matrix)),
+    quad.polygon = [
+        { point: quad.pos, texel: { u: 0, v: 0 } },
+        { point: add(quad.pos, transformVertex({ x: quad.width, y: 0, z: 0 }, matrix)), texel: { u: 1, v: 0 } },
+        { point: add(quad.pos, transformVertex({ x: quad.width, y: quad.height, z: 0 }, matrix)), texel: { u: 1, v: 1 } },
+        { point: add(quad.pos, transformVertex({ x: 0, y: quad.height, z: 0 }, matrix)), texel: { u: 0, v: 1 } },
     ];
 
     // precompute the positions of the patches in the quad
@@ -66,6 +69,12 @@ quads.forEach((quad) => {
                 texel: { u, v },
             });
         }
+    }
+
+    for (let i = 0; i < quad.texture.width * quad.texture.height * 4; i += 4) {
+        quad.texture.data[i] = Math.random() * 255;
+        quad.texture.data[i + 1] = Math.random() * 255;
+        quad.texture.data[i + 2] = Math.random() * 255;
     }
 });
 
@@ -151,13 +160,12 @@ loop(() => {
 
 const drawScene = () => {
     quads.forEach((quad) => {
-        const polygon = quad.points.map((pos) => transformVertex(pos, camera.matrix));
-        const clippedPolygon = clipPolygon(polygon, camera.nearPlane);
-        console.log(clippedPolygon.length);
-        const screen = clippedPolygon.map((r) => project(r, 160, 100, 0));
+        const viewPolygon = quad.polygon.map((foo) => ({ point: transformVertex(foo.point, camera.matrix), texel: foo.texel }));
+        const clippedPolygon = clipPolygon(viewPolygon, camera.nearPlane);
+        const screen = clippedPolygon.map((foo) => ({ point: project(foo.point, 160, 100, 0), texel: foo.texel }));
 
         for (let i = 1; i < screen.length - 1; i++) {
-            triangle(screen[0], screen[i], screen[i + 1], red);
+            correctTriangle(screen[0], screen[i], screen[i + 1], quad.texture);
         }
     });
 };
