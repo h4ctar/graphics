@@ -37,6 +37,7 @@ You'll probably need to use the wayback machine to find these sites:
  * http://freespace.virgin.net/hugo.elias/
  * http://www.qbasicnews.com/tutorials.php
  * http://www.petesqbsite.com/sections/tutorials/graphics.shtml
+ * https://www.cubic.org/
  * https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
  * https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/diffuse-lambertian-shading
  * https://www.davrous.com/2013/06/13/tutorial-series-learning-how-to-write-a-3d-soft-engine-from-scratch-in-c-typescript-or-javascript/

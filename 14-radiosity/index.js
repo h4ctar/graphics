@@ -6,10 +6,11 @@
  * @typedef { import("../lib/color").Color } Color
  */
 
-import { init, clear, blit, line, pset } from "../lib/draw.js";
-import { black, white } from "../lib/color.js";
+import { init, clear, blit, pset, triangle } from "../lib/draw.js";
+import { black, white, red } from "../lib/color.js";
 import { loop } from "../lib/loop.js";
-import { add, rotate, project, yRotationMatrix, multiplyMatrix, identityMatrix, translationMatrix, xRotationMatrix, transformVertex } from "../lib/math.js";
+import { add, project, clipPolygon } from "../lib/math.js";
+import { yRotationMatrix, transformVertex, xRotationMatrix, multiplyMatrix, translationMatrix, identityMatrix } from "../lib/matrix.js";
 
 const patchSize = 20;
 
@@ -19,7 +20,7 @@ const patchSize = 20;
  *   theta: number,
  *   width: number,
  *   height: number,
- *   corners: Point3[],
+ *   points: Point3[],
  *   patches: { pos: Point3, texel: Texel }[]
  * }[]} */
 const quads = [{
@@ -28,7 +29,7 @@ const quads = [{
     theta: 0,
     width: 1000,
     height: 200,
-    corners: [],
+    points: [],
     patches: [],
 },
 {
@@ -37,29 +38,29 @@ const quads = [{
     theta: 0,
     width: 1000,
     height: 200,
-    corners: [],
+    points: [],
     patches: [],
 }];
 
-// precompute the corners
 quads.forEach((quad) => {
-    quad.corners = [
-        quad.pos,
-        add(quad.pos, rotate({ x: quad.width, y: 0, z: 0 }, quad.phi, quad.theta)),
-        add(quad.pos, rotate({ x: quad.width, y: quad.height, z: 0 }, quad.phi, quad.theta)),
-        add(quad.pos, rotate({ x: 0, y: quad.height, z: 0 }, quad.phi, quad.theta)),
-    ];
-});
+    const matrix = yRotationMatrix(quad.phi);
 
-// precompute the patches
-quads.forEach((quad) => {
+    // precompute the corners of the quad
+    quad.points = [
+        quad.pos,
+        add(quad.pos, transformVertex({ x: quad.width, y: 0, z: 0 }, matrix)),
+        add(quad.pos, transformVertex({ x: quad.width, y: quad.height, z: 0 }, matrix)),
+        add(quad.pos, transformVertex({ x: 0, y: quad.height, z: 0 }, matrix)),
+    ];
+
+    // precompute the positions of the patches in the quad
     for (let v = 0; v < quad.height / patchSize; v++) {
         for (let u = 0; u < quad.width / patchSize; u++) {
-            const pos = add(quad.pos, rotate({
+            const pos = add(quad.pos, transformVertex({
                 x: patchSize / 2 + u * patchSize,
                 y: patchSize / 2 + v * patchSize,
                 z: 0,
-            }, quad.phi, quad.theta));
+            }, matrix));
             quad.patches.push({
                 pos,
                 texel: { u, v },
@@ -76,9 +77,13 @@ const updateCameraMatrix = () => {
 
 const camera = {
     pos: { x: 0, y: 0, z: -256 },
-    phi: 0, // rotation around y axis
+    phi: 0,   // rotation around y axis
     theta: 0, // rotation around z axis
     matrix: identityMatrix(),
+    nearPlane: {
+        normal: { x: 0, y: 0, z: 1 },
+        distance: 1
+    },
 };
 updateCameraMatrix();
 
@@ -146,12 +151,13 @@ loop(() => {
 
 const drawScene = () => {
     quads.forEach((quad) => {
-        const view = quad.corners.map((pos) => transformVertex(pos, camera.matrix));
-        const screen = view.map((r) => project(r, 160, 100, 0));
+        const polygon = quad.points.map((pos) => transformVertex(pos, camera.matrix));
+        const clippedPolygon = clipPolygon(polygon, camera.nearPlane);
+        console.log(clippedPolygon.length);
+        const screen = clippedPolygon.map((r) => project(r, 160, 100, 0));
 
-        line(screen[0], screen[1], white);
-        line(screen[1], screen[2], white);
-        line(screen[2], screen[3], white);
-        line(screen[3], screen[0], white);
+        for (let i = 1; i < screen.length - 1; i++) {
+            triangle(screen[0], screen[i], screen[i + 1], red);
+        }
     });
 };
