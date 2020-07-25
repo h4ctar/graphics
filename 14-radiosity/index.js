@@ -1,5 +1,6 @@
 // @ts-check
 /**
+ * @typedef {{ x: number, y: number, z: number }} Point3
  * @typedef {{ pos: Point3, u: number, v: number }} Patch
  * @typedef { import("../lib/draw").Texel } Texel
  * @typedef { import("../lib/color").Rgb } Rgb
@@ -9,8 +10,8 @@
 import { init, clear, blit, correctTriangle, clipPolygon } from "../lib/draw.js";
 import { black } from "../lib/color.js";
 import { loop } from "../lib/loop.js";
-import { project, clockwise, Point3 } from "../lib/math.js";
-import { Matrix4 } from "../lib/matrix.js";
+import { add, project, clockwise } from "../lib/math.js";
+import { yRotationMatrix, transformVertex, xRotationMatrix, multiplyMatrix, translationMatrix } from "../lib/matrix.js";
 import { Camera } from "./camera.js";
 
 const patchSize = 20;
@@ -28,7 +29,7 @@ const patchSize = 20;
  *   emission: Rgb,
  * }[]} */
 const quads = [{
-    pos: new Point3([-50, -50, -50]),
+    pos: { x: -50, y: -50, z: -50 },
     phi: 0,
     theta: 0,
     width: 100,
@@ -40,7 +41,7 @@ const quads = [{
     emission: { red: 128, green: 0, blue: 0 },
 },
 {
-    pos: new Point3([50, -50, 50]),
+    pos: { x: 50, y: -50, z: 50 },
     phi: Math.PI,
     theta: 0,
     width: 100,
@@ -52,7 +53,7 @@ const quads = [{
     emission: { red: 0, green: 128, blue: 0 },
 },
 {
-    pos: new Point3([10, -10, 40]),
+    pos: { x: 10, y: -10, z: 40 },
     phi: Math.PI,
     theta: 0,
     width: 20,
@@ -65,24 +66,24 @@ const quads = [{
 }];
 
 quads.forEach((quad) => {
-    const matrix = Matrix4.yRotation(quad.phi);
+    const matrix = yRotationMatrix(quad.phi);
 
     // precompute the corners of the quad
     quad.polygon = [
         { point: quad.pos, texel: { u: 0, v: 0 } },
-        { point: quad.pos.add(matrix.transform({ x: quad.width, y: 0, z: 0 })), texel: { u: 1, v: 0 } },
-        { point: quad.pos.add(matrix.transform({ x: quad.width, y: quad.height, z: 0 })), texel: { u: 1, v: 0 } },
-        { point: quad.pos.add(matrix.transform({ x: 0, y: quad.height, z: 0 })), texel: { u: 1, v: 0 } },
+        { point: add(quad.pos, transformVertex({ x: quad.width, y: 0, z: 0 }, matrix)), texel: { u: 1, v: 0 } },
+        { point: add(quad.pos, transformVertex({ x: quad.width, y: quad.height, z: 0 }, matrix)), texel: { u: 1, v: 1 } },
+        { point: add(quad.pos, transformVertex({ x: 0, y: quad.height, z: 0 }, matrix)), texel: { u: 0, v: 1 } },
     ];
 
     // precompute the positions of the patches in the quad
     for (let v = 0; v < quad.height / patchSize; v++) {
         for (let u = 0; u < quad.width / patchSize; u++) {
-            const pos = quad.pos.add(matrix.transform({
+            const pos = add(quad.pos, transformVertex({
                 x: patchSize / 2 + u * patchSize,
                 y: patchSize / 2 + v * patchSize,
                 z: 0,
-            }));
+            }, matrix));
             quad.patches.push({
                 pos,
                 texel: { u, v },
@@ -97,34 +98,40 @@ quads.forEach((quad) => {
     // }
 });
 
-const camera = new Camera(new Point3([0, 0, -256]), 0, 0);
+const camera = new Camera({ x: 0, y: 0, z: -256 }, 0, 0);
 
 window.addEventListener("keypress", (event) => {
     switch (event.key) {
         case "w": {
             camera.pos.x += 10 * Math.sin(camera.phi);
             camera.pos.z += 10 * Math.cos(camera.phi);
+            camera.updateMatrix();
             break;
         }
         case "s": {
             camera.pos.x -= 10 * Math.sin(camera.phi);
             camera.pos.z -= 10 * Math.cos(camera.phi);
+            camera.updateMatrix();
             break;
         }
         case "a": {
             camera.phi -= 0.1;
+            camera.updateMatrix();
             break;
         }
         case "d": {
             camera.phi += 0.1;
+            camera.updateMatrix();
             break;
         }
         case "q": {
             camera.theta -= 0.1;
+            camera.updateMatrix();
             break;
         }
         case "e": {
             camera.theta += 0.1;
+            camera.updateMatrix();
             break;
         }
     }
@@ -157,7 +164,7 @@ loop(() => {
  */
 const drawScene = (cam) => {
     quads.forEach((quad) => {
-        const viewPolygon = quad.polygon.map((foo) => ({ point: cam.matrix.transform(foo.point), texel: foo.texel }));
+        const viewPolygon = quad.polygon.map((foo) => ({ point: transformVertex(foo.point, cam.matrix), texel: foo.texel }));
         const clippedPolygon = clipPolygon(viewPolygon, cam.nearPlane);
         const screen = clippedPolygon.map((foo) => ({ point: project(foo.point, 160, 100, 0), texel: foo.texel }));
 

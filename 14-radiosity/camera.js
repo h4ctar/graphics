@@ -1,8 +1,6 @@
-import { Matrix4 } from "../lib/matrix.js";
-import { Point3 } from "../lib/math.js";
+import { xRotationMatrix, multiplyMatrix, translationMatrix, yRotationMatrix } from "../lib/matrix.js";
 
 export class Camera {
-
     /**
      * @param {Point3} pos
      * @param {number} phi
@@ -13,14 +11,15 @@ export class Camera {
         this.phi = phi;
         this.theta = theta;
         this.nearPlane = {
-            normal: new Point3([0, 0, 1]),
+            normal: { x: 0, y: 0, z: 1 },
             distance: 1
         };
+        this.updateMatrix();
     }
 
-    get matrix() {
-        return Matrix4.xRotation(-this.theta)
-            .mul(Matrix4.yRotation(-this.phi))
-            .mul(Matrix4.translation(-this.pos.x, -this.pos.y, -this.pos.z));
+    updateMatrix() {
+        this.matrix = xRotationMatrix(-this.theta);
+        this.matrix = multiplyMatrix(this.matrix, yRotationMatrix(-this.phi));
+        this.matrix = multiplyMatrix(this.matrix, translationMatrix({ x: -this.pos.x, y: -this.pos.y, z: -this.pos.z }));
     }
 }
