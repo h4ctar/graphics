@@ -5,7 +5,7 @@
 
 import { init, clear, blit, triangle } from "../lib/draw.js";
 import { black } from "../lib/color.js";
-import { clockwise, project, rotate, dot, sub, cross, normalize } from "../lib/math.js";
+import { clockwise, project, rotate, Point3 } from "../lib/math.js";
 import { loop } from "../lib/loop.js";
 
 const poisitions = [
@@ -39,11 +39,7 @@ let theta = 0;
 
 const ambient = 16;
 const incident = 256 - 16;
-const light = normalize({
-    x: 1,
-    y: 1,
-    z: 1,
-});
+const light = new Point3([1, 1, 1,]).normalize();
 
 init();
 
@@ -56,10 +52,10 @@ loop(() => {
     triangles
         .filter((t) => clockwise(screen[t.a], screen[t.b], screen[t.c]))
         .forEach((t) => {
-            const ab = sub(rotated[t.a], rotated[t.b]);
-            const cb = sub(rotated[t.c], rotated[t.b]);
-            const normal = normalize(cross(ab, cb));
-            const diffuse = Math.max(incident * dot(normal, light), 0);
+            const ab = rotated[t.a].sub(rotated[t.b]);
+            const cb = rotated[t.c].sub(rotated[t.b]);
+            const normal = ab.cross(cb).normalize();
+            const diffuse = Math.max(incident * normal.dot(light), 0);
             const brightness = diffuse + ambient;
             triangle(screen[t.a], screen[t.b], screen[t.c], { index: brightness });
         });

@@ -45,17 +45,18 @@ loop(() => {
     const rotated = poisitions.map((p) => rotate(p, phi, theta));
     const screen = rotated.map((r) => project(r));
 
-    // triangles
-    //     .filter((t) => clockwise(screen[t.a], screen[t.b], screen[t.c]))
-    //     .forEach((t) => affineTriangle(screen[t.a], t.ta, screen[t.b], t.tb, screen[t.c], t.tc, texture));
-
     triangles
         .filter((t) => clockwise(screen[t.a], screen[t.b], screen[t.c]))
         .forEach((t) => {
             const pa = { ...screen[t.a], z: rotated[t.a].z + 256 };
             const pb = { ...screen[t.b], z: rotated[t.b].z + 256 };
             const pc = { ...screen[t.c], z: rotated[t.c].z + 256 };
-            correctTriangle(pa, t.ta, pb, t.tb, pc, t.tc, texture);
+            correctTriangle(
+                { point: pa, texel: t.ta },
+                { point: pb, texel: t.tb },
+                { point: pc, texel: t.tc },
+                texture
+            );
         });
 
     phi += 0.01;
