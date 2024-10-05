@@ -24,7 +24,7 @@ Anyway, I'm having a lot of fun rereading all the tutors and recreating these ef
 ![Texture Cube](13-texture_cube/screenshot.png)
 
 ## Run Online
- * https://bensmith87.github.io/graphics
+ * https://h4ctar.github.io/graphics
 
 ## Run Locally
  1. Clone or download and unzip the repository
